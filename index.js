@@ -72,6 +72,20 @@ Web3ProviderEngine.prototype.addProvider = function(source){
 }
 
 Web3ProviderEngine.prototype.send = function(payload){
+  const self = this
+
+  // Provider 0 is fixture provider
+  var provider = self._providers[0];
+  result = provider.handleSyncRequest(payload);
+  if (result) {
+    var resultObj = {
+      id: payload.id,
+      jsonrpc: payload.jsonrpc,
+      result: result,
+    }
+    return resultObj;
+  }
+
   throw new Error('Web3ProviderEngine does not support synchronous requests.')
 }
 

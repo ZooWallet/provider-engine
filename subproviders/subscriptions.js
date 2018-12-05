@@ -24,6 +24,19 @@ Object.assign(SubscriptionSubprovider.prototype, EventEmitter.prototype)
 // preserve our constructor, though
 SubscriptionSubprovider.prototype.constructor = SubscriptionSubprovider
 
+// emit subscription data 
+SubscriptionSubprovider.prototype.setEngine = function(engine) {
+  const self = this
+  self.engine = engine
+  engine.on('block', function(block) {
+    self.currentBlock = block
+  })
+
+  self.on('data', (err, data) => {
+    engine.emit('data', data)
+  })
+}
+
 SubscriptionSubprovider.prototype.eth_subscribe = function(payload, cb) {
   const self = this
   let createSubscriptionFilter = () => {}
