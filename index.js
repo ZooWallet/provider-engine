@@ -74,6 +74,24 @@ Web3ProviderEngine.prototype.addProvider = function(source){
 Web3ProviderEngine.prototype.send = function(payload){
   const self = this
 
+  // if payload is method name
+  if (typeof payload === 'string') {
+    p = new Promise((resolve, reject) => {
+      this.sendAsync({
+        method: payload,
+        params,
+      }, (err, res) => {
+          if (err) {
+              console.log('send rejected');
+              reject(err);
+          } 
+          console.log('send resolved');
+          resolve(res);
+      });
+    })
+    return p;
+  }
+
   // Provider 0 is fixture provider
   var provider = self._providers[0];
   result = provider.handleSyncRequest(payload);
