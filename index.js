@@ -24,28 +24,29 @@ function Web3ProviderEngine(opts) {
   // block polling
   const directProvider = { sendAsync: self._handleAsync.bind(self) }
   const blockTrackerProvider = opts.blockTrackerProvider || directProvider
-  self._blockTracker = opts.blockTracker || new EthBlockTracker({
-    provider: blockTrackerProvider,
-    pollingInterval: opts.pollingInterval || 4000,
-  })
+//   self._blockTracker = opts.blockTracker || new EthBlockTracker({
+//     provider: blockTrackerProvider,
+//     pollingInterval: opts.pollingInterval || 4000,
+//   })
 
   // handle new block
-  self._blockTracker.on('block', (jsonBlock) => {
-    const bufferBlock = toBufferBlock(jsonBlock)
-    self._setCurrentBlock(bufferBlock)
-  })
+//   self._blockTracker.on('block', (jsonBlock) => {
+//     const bufferBlock = toBufferBlock(jsonBlock)
+//     self._setCurrentBlock(bufferBlock)
+//   })
 
   // emit block events from the block tracker
-  self._blockTracker.on('block', self.emit.bind(self, 'rawBlock'))
-  self._blockTracker.on('sync', self.emit.bind(self, 'sync'))
-  self._blockTracker.on('latest', self.emit.bind(self, 'latest'))
+//   self._blockTracker.on('block', self.emit.bind(self, 'rawBlock'))
+//   self._blockTracker.on('sync', self.emit.bind(self, 'sync'))
+//   self._blockTracker.on('latest', self.emit.bind(self, 'latest'))
 
   // set initialization blocker
   self._ready = new Stoplight()
   // unblock initialization after first block
-  self._blockTracker.once('block', () => {
-    self._ready.go()
-  })
+//   self._blockTracker.once('block', () => {
+//     self._ready.go()
+//   })
+  self._ready.go()
   // local state
   self.currentBlock = null
   self._providers = []
@@ -56,13 +57,13 @@ function Web3ProviderEngine(opts) {
 Web3ProviderEngine.prototype.start = function(cb = noop){
   const self = this
   // start block polling
-  self._blockTracker.start().then(cb).catch(cb)
+//   self._blockTracker.start().then(cb).catch(cb)
 }
 
 Web3ProviderEngine.prototype.stop = function(){
   const self = this
   // stop block polling
-  self._blockTracker.stop()
+//   self._blockTracker.stop()
 }
 
 Web3ProviderEngine.prototype.addProvider = function(source){
